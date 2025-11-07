@@ -2,15 +2,26 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] Animator animator;
+    public void UpdateBoolParam(string param, bool val)
     {
-        
+        animator.SetBool(param, val);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateIntParam(string param, int val)
     {
-        
+        animator.SetInteger(param, val);
     }
+
+    public void UpdateFloatParam(string param, float val)
+    {
+        animator.SetFloat(param, val);
+    }
+
+    public void UpdateTriggerParam(string param)
+    {
+        animator.SetTrigger(param);
+    }
+
+ 
 }

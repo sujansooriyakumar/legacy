@@ -1,16 +1,36 @@
+﻿using System;
 using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+    [SerializeField] private InputController inputController;
+    [SerializeField] private AnimationController animationController;
+    public float walkSpeed;
+    public float rotationSpeed;
+    private Vector3 walkVector;
+    public event Action OnWalk;
+
+    private void Start() { inputController.OnWalkInputReceived += Walk; }
+    private void Walk(Vector2 walkVector_){      
+        walkVector = new Vector3(walkVector_.x, 0, walkVector_.y);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+       
+
+        Vector3 moveDirection = transform.TransformDirection(walkVector.normalized);
+
+        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+
+        transform.position += moveDirection * walkSpeed * Time.deltaTime;
+        Animate();
+        OnWalk?.Invoke();
+    }
+
+    private void Animate()
+    {
+        animationController.UpdateFloatParam("moveZ", walkVector.z);
+        if(walkVector.z == 0) animationController.UpdateFloatParam("moveX", walkVector.x);
     }
 }
