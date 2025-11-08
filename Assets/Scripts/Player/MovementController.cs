@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(InputController))]
 [RequireComponent(typeof(AnimationController))]
@@ -17,6 +18,10 @@ public class MovementController : MonoBehaviour
         animationController = GetComponent<AnimationController>();
         inputController.OnWalkInputReceived += Walk;
         inputController.OnRunInputReceived += Run;
+
+        inputController.OnHeavyAttackInputReceived += Stop;
+        inputController.OnLightAttackInputReceived += Stop;
+        inputController.OnBlockInputReceived += Stop;
         
     }
     private void Walk(Vector2 walkVector_){      
@@ -31,8 +36,20 @@ public class MovementController : MonoBehaviour
 
     private void Update()
     {
+        Vector3 moveDirection = transform.TransformDirection(walkVector.normalized);
+
+        if (walkVector.z > 0.1f || walkVector.x != 0) // forward or sideways
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1 * Time.deltaTime);
+        }
         Animate();
         OnWalk?.Invoke();
+    }
+
+    private void Stop()
+    {
+        walkVector = Vector3.zero;
     }
 
     private void Animate()

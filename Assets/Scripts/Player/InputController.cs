@@ -21,7 +21,7 @@ public class InputController : MonoBehaviour
         actionMap.FindAction("Walk").canceled += WalkInput;
 
         actionMap.FindAction("Block").performed += BlockInput;
-        actionMap.FindAction("Block").canceled+= BlockInput;
+        actionMap.FindAction("Block").canceled += BlockInput;
 
         actionMap.FindAction("Run").performed += RunInput;
         actionMap.FindAction("Run").canceled += RunInput;
@@ -38,16 +38,16 @@ public class InputController : MonoBehaviour
 
     private void WalkInput(InputAction.CallbackContext c)
     {
-        if(controller.GetState() == PlayerState.ACTIVE) OnWalkInputReceived?.Invoke(c.ReadValue<Vector2>());
+        if (controller.GetState() == PlayerState.ACTIVE) OnWalkInputReceived?.Invoke(c.ReadValue<Vector2>());
     }
 
     private void BlockInput(InputAction.CallbackContext c)
     {
-        if (controller.GetState() == PlayerState.ACTIVE) OnBlockInputReceived?.Invoke();
+        if (controller.GetState() == PlayerState.ACTIVE || controller.GetState() == PlayerState.BLOCK) OnBlockInputReceived?.Invoke();
 
     }
 
-    private void RunInput (InputAction.CallbackContext c)
+    private void RunInput(InputAction.CallbackContext c)
     {
 
         if (controller.GetState() == PlayerState.ACTIVE) OnRunInputReceived?.Invoke();
@@ -59,12 +59,11 @@ public class InputController : MonoBehaviour
     }
 
     private void LightAttackInput(InputAction.CallbackContext c) {
-        if (controller.GetState() == PlayerState.ACTIVE) OnLightAttackInputReceived?.Invoke();
+        if (controller.GetState() == PlayerState.ACTIVE || controller.GetState() == PlayerState.LINK) OnLightAttackInputReceived?.Invoke();
     }
     
     private void HeavyAttackInput(InputAction.CallbackContext c)
     {
-        if (controller.GetState() == PlayerState.ACTIVE) OnHeavyAttackInputReceived?.Invoke();
         if (controller.GetState() == PlayerState.ACTIVE) OnHeavyAttackInputReceived?.Invoke();
     }
 

@@ -22,12 +22,16 @@ public class CombatController : MonoBehaviour
 
     private void LightAttack()
     {
-        if(stateController.GetState() == PlayerState.ACTIVE)
+       
+        if (stateController.GetState() == PlayerState.ACTIVE|| stateController.GetState() == PlayerState.LINK)
         {
             
             animationController.UpdateTriggerParam("light_atk");
             StateController.Instance.UpdateState(PlayerState.ATTACK);
         }
+
+        
+        
     }
 
     private void HeavyAttack()

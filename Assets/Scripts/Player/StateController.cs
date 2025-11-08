@@ -18,6 +18,7 @@ public class StateController:MonoBehaviour
     public void ResetState() {   currentState = PlayerState.ACTIVE;  }
 
     public PlayerState GetState() { return currentState; }
+
 }
 
 public enum PlayerState
