@@ -5,9 +5,10 @@ using UnityEngine.InputSystem;
 public class InputController : MonoBehaviour
 {
     [SerializeField] InputActionAsset inputActionAsset;
+    StateController controller;
     public event Action<Vector2> OnWalkInputReceived;
-    public event Action<int> OnBlockInputReceived;
-    public event Action<int> OnRunInputReceived;
+    public event Action OnBlockInputReceived;
+    public event Action OnRunInputReceived;
     public event Action OnRollInputReceived;
     public event Action OnLightAttackInputReceived;
     public event Action OnHeavyAttackInputReceived;
@@ -31,22 +32,25 @@ public class InputController : MonoBehaviour
         actionMap.FindAction("Heavy Attack").performed += HeavyAttackInput;
 
         actionMap.FindAction("Crouch").performed += CrouchInput;
+
+        controller = StateController.Instance;
     }
 
     private void WalkInput(InputAction.CallbackContext c)
     {
-        OnWalkInputReceived?.Invoke(c.ReadValue<Vector2>());
+        if(controller.GetState() == PlayerState.ACTIVE) OnWalkInputReceived?.Invoke(c.ReadValue<Vector2>());
     }
 
     private void BlockInput(InputAction.CallbackContext c)
     {
-        OnBlockInputReceived?.Invoke((int)c.ReadValue<float>());
+        if (controller.GetState() == PlayerState.ACTIVE) OnBlockInputReceived?.Invoke();
 
     }
 
     private void RunInput (InputAction.CallbackContext c)
     {
-        OnRunInputReceived?.Invoke((int)c.ReadValue<float>());
+
+        if (controller.GetState() == PlayerState.ACTIVE) OnRunInputReceived?.Invoke();
     }
 
     private void RollInput(InputAction.CallbackContext c)
@@ -55,12 +59,13 @@ public class InputController : MonoBehaviour
     }
 
     private void LightAttackInput(InputAction.CallbackContext c) {
-        OnLightAttackInputReceived?.Invoke();
+        if (controller.GetState() == PlayerState.ACTIVE) OnLightAttackInputReceived?.Invoke();
     }
     
     private void HeavyAttackInput(InputAction.CallbackContext c)
     {
-        OnHeavyAttackInputReceived?.Invoke();
+        if (controller.GetState() == PlayerState.ACTIVE) OnHeavyAttackInputReceived?.Invoke();
+        if (controller.GetState() == PlayerState.ACTIVE) OnHeavyAttackInputReceived?.Invoke();
     }
 
     private void CrouchInput(InputAction.CallbackContext c) {

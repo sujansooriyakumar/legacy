@@ -66,7 +66,7 @@
                     "id": "c85fb6f7-602f-4c60-879c-29b84d393a55",
                     "expectedControlType": "Integer",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "initialStateCheck": true
                 }
             ],
